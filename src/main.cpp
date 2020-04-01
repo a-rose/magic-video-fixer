@@ -1,4 +1,3 @@
-#include <fstream>
 #include <iostream>
 #include "Sequence.h"
 #include "settings.h"

@@ -2,10 +2,8 @@
 #include <math.h>
 #include <numeric>
 #include <boost/range/numeric.hpp>
-#include <boost/range/algorithm/max_element.hpp>
 #include <boost/range/adaptor/map.hpp>
 #include <boost/range/algorithm/copy.hpp>
-#include <boost/range/algorithm_ext/erase.hpp>
 #include <boost/math/distributions/normal.hpp>
 
 uint Frame::GetIndex() {
@@ -44,13 +42,13 @@ void Frame::RemoveCandidate(uint index) {
 }
 
 int Frame::BestCandidate() {
-    auto bestIt = std::max_element(candidates.begin(),candidates.end(),[] (const auto& a, const auto& b)->bool{ return a.second < b.second; } );
+    auto bestIt = max_element(candidates.begin(),candidates.end(),[] (const auto& a, const auto& b)->bool{ return a.second < b.second; } );
     return bestIt->first;
 }
 
 vector<double> Frame::SortCandidates() {
     vector<double> candidates2;
-    boost::range::copy(candidates | boost::adaptors::map_values, std::back_inserter(candidates2));
+    boost::range::copy(candidates | boost::adaptors::map_values, back_inserter(candidates2));
    
     // Reverse sort (descending SSIM)
     sort(candidates2.rbegin(), candidates2.rend());

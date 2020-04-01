@@ -1,6 +1,5 @@
 #include <fstream>
 #include <boost/range/adaptor/map.hpp>
-#include <boost/math/distributions/normal.hpp>
 #include <opencv2/opencv.hpp>
 #include "ssim.h"
 #include "Sequence.h"
