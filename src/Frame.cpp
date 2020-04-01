@@ -14,11 +14,13 @@ Mat& Frame::GetImage() {
     return image;
 }
 
-Mat& Frame::GetYUVImage()  {
+Mat& Frame::GetYUVImage() {
     return image_yuv;
 }
 
 double Frame::GetSSIM(uint candidateIdx) {
+    lock_guard<mutex> lock(mx);
+
     auto it = candidates.find(candidateIdx);
     if(it == candidates.end()) {
         return 0.0;
@@ -34,6 +36,7 @@ double Frame::GetStandardDeviation() {
 }
 
 void Frame::AddCandidate(uint index, double ssim) {
+    lock_guard<mutex> lock(mx);
     candidates.emplace(index, ssim);
 }
 

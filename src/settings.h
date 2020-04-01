@@ -26,6 +26,9 @@ struct Settings{
     // SSIM backup file. Using mode 1 and 2, reading SSIM from this file
     // avoids computing it again.
     string ssim_data_file = "ssim_y.txt";
+
+    // Number of threads to compute SSIM in parallel
+    int nb_threads_ssim = 6;
     
     // Limits the number of frames to process
     int frames_limit = 999;

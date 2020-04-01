@@ -23,6 +23,8 @@ Settings loadAppSettings(const string& file) {
             iss >> settings.output_file;
         } else if (param == "ssim_data_file") {
             iss >> settings.ssim_data_file;
+        } else if (param == "nb_threads_ssim") {
+            iss >> settings.nb_threads_ssim;
         } else if (param == "first_frame") {
             iss >> settings.first_frame;
         } else if (param == "frames_limit") {

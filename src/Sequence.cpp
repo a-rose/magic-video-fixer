@@ -1,7 +1,7 @@
 #include <fstream>
 #include <boost/range/adaptor/map.hpp>
 #include <opencv2/opencv.hpp>
-#include "ssim.h"
+#include "ssim_thread.h"
 #include "Sequence.h"
 #include "Hungarian.h"
 
@@ -101,6 +101,9 @@ void Sequence::LoadFrames() {
 void Sequence::ComputeSSIM() {
     cout << "Computing SSIM between all frames..." << endl;
 
+    vector<thread> ssim_threads;
+    int nb_threads = 0;
+
     for(auto& [refIdx, refFrame] : frames) {
         for(auto& [idx, frame] : frames) {
             
@@ -117,13 +120,29 @@ void Sequence::ComputeSSIM() {
                 continue;
             }
 
-            Scalar ssimScalar = getMSSIM(refFrame.GetYUVImage(), frame.GetYUVImage());
-            double ssimY = ssimScalar[0];
+            auto th = thread(ssim_thread, ref(refFrame), ref(frame));
+            ssim_threads.push_back(move(th));
+            nb_threads++;
 
-            // Set ssim for both frames at once
-            refFrame.AddCandidate(idx, ssimY);
-            frame.AddCandidate(refIdx, ssimY);
+            if(nb_threads >= settings.nb_threads_ssim) {
+                for(thread & th : ssim_threads) {
+                    if(th.joinable()) {
+                        th.join();
+                        nb_threads--;
+                    }
+                }
+                ssim_threads.clear();
+            }
         }
+
+        for(thread & th : ssim_threads) {
+            if(th.joinable()) {
+                th.join();
+                nb_threads--;
+            }
+        }
+        ssim_threads.clear();
+
         refFrame.BuildStats();
     }
 

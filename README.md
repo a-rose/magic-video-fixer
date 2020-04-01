@@ -32,6 +32,14 @@ Hungarian algorithm source: https://github.com/mcximing/hungarian-algorithm-cpp
 
 ## TODO
 
-- [ ] Make `ComputeSSIM()` multi-threaded as it is the most time-consuming process by far.
 - [ ] Compute SSIM on the Luma channel only. Currently, frames are converted to YUV and only the Y channel's SSIM is kept as it is the most relevant to analyse the image structure. But all channels' SSIM are computed which is a waste of time.
 - [ ] Import Hungarian from the repo instead of copying the files
+- [ ] docs
+
+## Optimisation
+
+Speedup measured against initial commit
+
+| Improvement | Speedup |
+| ------------- |:-------------:| 
+| Implemented multi-threading in ComputeSSIM(). Using 6 threads by default.      | x1.8 | 

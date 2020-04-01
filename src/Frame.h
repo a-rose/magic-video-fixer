@@ -1,6 +1,7 @@
 #pragma once
 
 #include <map>
+#include <mutex>
 #include <opencv2/opencv.hpp>
 using namespace cv;
 using namespace std;
@@ -9,6 +10,7 @@ class Frame {
 private:
     uint index;
     Mat image, image_yuv;
+    mutex mx;
 
     // Candidates
     map<int, double> candidates; // frame index -> ssim
@@ -21,6 +23,17 @@ public:
         , standard_deviation(0.0)
     {}
 
+    // Copy constructor
+    // TODO should lock f.mx before copying but f must be const
+    Frame(const Frame& f)
+        : index(f.index)
+        , image(f.image)
+        , image_yuv(f.image_yuv)
+        , candidates(f.candidates)
+        , mean_ssim(f.mean_ssim)
+        , standard_deviation(f.standard_deviation)
+    {}
+    
     uint GetIndex();
     Mat& GetImage();
     Mat& GetYUVImage();
