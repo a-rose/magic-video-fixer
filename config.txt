@@ -1,0 +1,9 @@
+mode 1
+algo 1
+input_file /home/antoine/Documents/dev/Digeiz/corrupted_video.mp4
+output_file fixed_video.mp4
+ssim_data_file ssim_y.txt
+frames_limit 999
+first_frame 30
+minimum_ssim 0.65
+detection_threshold 0.78
