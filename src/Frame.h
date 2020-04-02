@@ -9,7 +9,7 @@ using namespace std;
 class Frame {
 private:
     uint index;
-    Mat image, image_yuv;
+    Mat image, image_luma;
     mutex mx;
 
     // Candidates
@@ -28,7 +28,7 @@ public:
     Frame(const Frame& f)
         : index(f.index)
         , image(f.image)
-        , image_yuv(f.image_yuv)
+        , image_luma(f.image_luma)
         , candidates(f.candidates)
         , mean_ssim(f.mean_ssim)
         , standard_deviation(f.standard_deviation)
@@ -36,7 +36,7 @@ public:
     
     uint GetIndex();
     Mat& GetImage();
-    Mat& GetYUVImage();
+    Mat& GetImageLuma();
     double GetSSIM(uint candidateIdx);
     double GetMeanSSIM();
     double GetStandardDeviation();
@@ -46,7 +46,7 @@ public:
     int BestCandidate();
     vector<double> SortCandidates();
 
-    void RGBToYUV();
+    void RGBToLuma();
     string SSIMToString();
     void BuildStats();
 

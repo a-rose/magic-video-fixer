@@ -14,8 +14,8 @@ Mat& Frame::GetImage() {
     return image;
 }
 
-Mat& Frame::GetYUVImage() {
-    return image_yuv;
+Mat& Frame::GetImageLuma() {
+    return image_luma;
 }
 
 double Frame::GetSSIM(uint candidateIdx) {
@@ -58,8 +58,13 @@ vector<double> Frame::SortCandidates() {
     return candidates2;
 }
 
-void Frame::RGBToYUV() {
+void Frame::RGBToLuma() {
+    Mat image_yuv, yuv[3];
+  
+    // Convert to YUV, then split YUV channels in 3 separate Mats
     cvtColor(image, image_yuv, COLOR_BGR2YUV);
+    split(image_yuv, yuv);
+    image_luma = yuv[0];
 }
 
 string Frame::SSIMToString() {

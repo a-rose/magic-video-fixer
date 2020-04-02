@@ -32,14 +32,24 @@ Hungarian algorithm source: https://github.com/mcximing/hungarian-algorithm-cpp
 
 ## TODO
 
-- [ ] Compute SSIM on the Luma channel only. Currently, frames are converted to YUV and only the Y channel's SSIM is kept as it is the most relevant to analyse the image structure. But all channels' SSIM are computed which is a waste of time.
+- [x] Make `ComputeSSIM()` multi-threaded as it is the most time-consuming process by far.
+- [x] Compute SSIM on the Luma channel only. Currently, frames are converted to YUV and only the Y channel's SSIM is kept as it is the most relevant to analyse the image structure. But all channels' SSIM are computed which is a waste of time.
+- [ ] Store the Luma values in an array or a vector, which is less complex than a Mat. And find a new SSIM implementation for the choosen structure.
 - [ ] Import Hungarian from the repo instead of copying the files
 - [ ] docs
 
 ## Optimisation
 
-Speedup measured against initial commit
+Period for ComputeSSIM() measured against initial commit on my dev machine.
 
-| Improvement | Speedup |
-| ------------- |:-------------:| 
-| Implemented multi-threading in ComputeSSIM(). Using 6 threads by default.      | x1.8 | 
+| Improvement | Period (ms/frame) | Speedup |
+| ------------- | ------------- | ------------- | 
+| Initial commit | 300 | | 
+| Implemented multi-threading in ComputeSSIM(). Using 6 threads by default. | 160 | x1.8 |
+| Compute SSIM on Luma channel only <sup>[1]</sup>| 60 | x2.7 |
+| | | |
+| *Total* | | *x5* | 
+
+Notes:
+
+- **1**: The RGB to YUV conversion time increased from 1.4 ms to 3.0ms per frame, which is not taken into account to compute the speedup since this conversion is done outside of ComputeSSIM(). Taking it into account reduces the speedup to x2.6.

@@ -92,7 +92,7 @@ void Sequence::LoadFrames() {
     cap.release();
 
     for(auto& frame : frames | boost::adaptors::map_values) {
-        frame.RGBToYUV();
+        frame.RGBToLuma();
     }
 
     cout << "Done" << endl << endl;
@@ -104,7 +104,7 @@ void Sequence::ComputeSSIM() {
     vector<thread> ssim_threads;
     int nb_threads = 0;
 
-    for(auto& [refIdx, refFrame] : frames) {
+    for(auto& [refIdx, refFrame] : frames) {    
         for(auto& [idx, frame] : frames) {
             
             // Don't compute a frame's ssim with itself

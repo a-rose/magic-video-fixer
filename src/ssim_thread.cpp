@@ -2,7 +2,7 @@
 #include "ssim.h"
 
 void ssim_thread(Frame& frame1, Frame& frame2) {
-    Scalar ssimScalar = getMSSIM(frame1.GetYUVImage(), frame2.GetYUVImage());
+    Scalar ssimScalar = getMSSIM(frame1.GetImageLuma(), frame2.GetImageLuma());
     double ssimY = ssimScalar[0];
 
     // Set ssim for both frames at once
