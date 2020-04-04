@@ -13,6 +13,8 @@ set(magic-video-fixer_SOURCES
     src/ssim.cpp
     src/Frame.cpp
     src/Sequence.cpp
+    src/ChallengeSolver.cpp
+    src/NaiveSolver.cpp
     src/Hungarian.cpp
 )
 
@@ -22,6 +24,9 @@ set(magic-video-fixer_HEADERS
     src/ssim.h
     src/Frame.h
     src/Sequence.h
+    src/Solver.h
+    src/ChallengeSolver.h
+    src/NaiveSolver.h
     src/Hungarian.h
 )
 

@@ -13,12 +13,7 @@ int main(int argc, char* argv[]) {
     list<Frame> frameList;
 
     seq.Load();
-
-    if(settings.algo == 0) {
-        frameList = seq.Solve();
-    } else {
-        frameList = seq.Solve2();
-    }
+    frameList = seq.Solve();
     seq.Write(frameList);
 
     cout << "Exiting normally" << endl;
