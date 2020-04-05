@@ -15,8 +15,8 @@ private:
     int width, height;
 
 public:
-    Sequence(Settings settings)
-        : settings(settings)
+    Sequence(string config_file)
+        : settings(loadAppSettings(config_file))
         , solver(settings)
     {}
 

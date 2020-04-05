@@ -22,6 +22,14 @@ void Sequence::Load() {
         default:
             throw runtime_error("Invalid mode in settings");
     }
+
+    if(uint(settings.first_frame) >= frames.size()) {
+        string error("Config param first_frame = "
+            + to_string(settings.first_frame)
+            + " is bigger than the number of frames = "
+            + to_string(frames.size()));
+        throw runtime_error(error);
+    }
 }
 
 list<Frame> Sequence::Solve() {
@@ -29,13 +37,6 @@ list<Frame> Sequence::Solve() {
 }
 
 void Sequence::Write(list<Frame>& sequence) {
-    cout << "Sequence complete:" << endl;
-
-    for_each(sequence.begin(), sequence.end(), [](Frame& frame) {
-        cout << frame.GetIndex() << " -> ";
-    });
-    cout << endl << endl;
-
     if(settings.mode < 2) {
         ListToVideo(sequence);
     }
@@ -46,8 +47,7 @@ void Sequence::LoadFrames() {
     VideoCapture cap(settings.input_file); 
 
     if (cap.isOpened() == false) {
-        cout << "Cannot open the video file" << endl;
-        exit(1);
+        throw runtime_error("Cannot open the video file");
     }
 
     fps = cap.get(CAP_PROP_FPS);
@@ -143,6 +143,10 @@ void Sequence::LoadSSIM() {
 
     cout << "Loading SSIM from backup file..." << endl;
 
+    if(ssimFile.fail()) {
+        throw invalid_argument("Cannot open ssim file");
+    }
+
     getline(ssimFile, line);
     iss = istringstream(line);
     iss >> nbFrames;
@@ -173,7 +177,7 @@ void Sequence::ListToVideo(list<Frame>& seq) {
     VideoWriter video(settings.output_file, codec, fps, Size(width, height), true); 
 
     if(!video.isOpened()) {
-        throw runtime_error("Failed to open output file");
+        throw invalid_argument("Failed to open output file");
     }
 
     while(!seq.empty()) { 

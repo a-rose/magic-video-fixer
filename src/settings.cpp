@@ -1,5 +1,6 @@
 #include <fstream>
 #include <sstream>
+#include <ios>
 #include "settings.h"
 
 
@@ -8,6 +9,10 @@ Settings loadAppSettings(const string& file) {
     ifstream config(file);
     string line;
     
+    if(config.fail()) {
+        throw invalid_argument("Cannot open config file");
+    }
+
     while(getline(config, line)) {
         string param;
         stringstream iss(line);

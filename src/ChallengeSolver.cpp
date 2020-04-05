@@ -55,8 +55,7 @@ list<Frame> ChallengeSolver::BuildSequence(map<int, Frame>& frames, map<int, int
             // We don't need this frame anymore
             auto framesVecIt = find(indexes.begin(), indexes.end(), index);
             if(framesVecIt == indexes.end()) {
-                cout << "Frame not found: " << index << endl;
-                throw runtime_error("Frame not found");
+                throw runtime_error("Frame not found:" + to_string(index));
             }
             indexes.erase(framesVecIt);
 
