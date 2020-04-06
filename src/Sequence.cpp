@@ -33,7 +33,7 @@ void Sequence::Load() {
 }
 
 list<Frame> Sequence::Solve() {
-    return solver.Solve(frames);
+    return solver->Solve(frames);
 }
 
 void Sequence::Write(list<Frame>& sequence) {
@@ -180,10 +180,8 @@ void Sequence::ListToVideo(list<Frame>& seq) {
         throw invalid_argument("Failed to open output file");
     }
 
-    while(!seq.empty()) { 
-        Frame& f = seq.front();
-        video.write(f.GetImage());
-        seq.pop_front(); 
+    for(auto& frame : seq) {
+        video.write(frame.GetImage());
     }
 
     cout << "Done" << endl << endl;

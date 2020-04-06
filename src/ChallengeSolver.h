@@ -1,14 +1,14 @@
 #pragma once
 
-#include "SolverImplem.h"
+#include "Solver.h"
 
-class ChallengeSolver : public SolverImplem {
+class ChallengeSolver : public Solver {
 public:
     ChallengeSolver(Settings s)
-        : SolverImplem(s)
+        : Solver(s)
     {}
 
-    list<Frame> Solve(map<int, Frame>& frames);
+    list<Frame> Solve(map<int, Frame>& frames) override;
 
 private:
     void FilterCorruptedFrames(map<int, Frame>& frames);
@@ -16,5 +16,5 @@ private:
 
     void RemoveFrames(map<int, Frame>& frames, const vector<uint>& rejected_frames);
     vector<vector<double>> GetCostMatrix(map<int, Frame>& frames);
-    map<int, int> ConvertAssignment(vector<int>& assignment, vector<int>& indexes);
+    map<int, int> ConvertAssignment(const vector<int>& assignment, vector<int>& indexes);
 };

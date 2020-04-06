@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Solver.h"
+#include "SolverFabricator.h"
 #include "Frame.h"
 #include "settings.h"
 
@@ -8,7 +8,7 @@ class Sequence {
 private:
     Settings settings;
     map<int, Frame> frames;
-    Solver solver;
+    unique_ptr<Solver> solver;
 
     // Video properties
     double fps;
@@ -17,8 +17,9 @@ private:
 public:
     Sequence(string config_file)
         : settings(loadAppSettings(config_file))
-        , solver(settings)
-    {}
+    {
+        solver = CreateSolver(settings);
+    }
 
     void Load();
     list<Frame> Solve();

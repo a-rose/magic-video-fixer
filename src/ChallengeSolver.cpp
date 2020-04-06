@@ -102,14 +102,11 @@ vector<vector<double>> ChallengeSolver::GetCostMatrix(map<int, Frame>& frames) {
     int y=0;
     vector<vector<double>> cost_matrix{frames.size()};
 
-    for(auto frameItY = frames.begin(); frameItY != frames.end(); ++frameItY) {
-        Frame& frameY = frameItY->second; 
+    for(auto& frame_y : frames | boost::adaptors::map_values) {
         vector<double>& row = cost_matrix[y];
 
-        for(auto frameItX = frames.begin(); frameItX != frames.end(); ++frameItX) {
-            Frame& frameX = frameItX->second;
-
-            double ssim = frameY.GetSSIM(frameX.GetIndex());
+        for(auto& index_x : frames | boost::adaptors::map_keys) {
+            double ssim = frame_y.GetSSIM(index_x);
             row.push_back(1.0 - ssim);
         }
         y++;
@@ -118,13 +115,12 @@ vector<vector<double>> ChallengeSolver::GetCostMatrix(map<int, Frame>& frames) {
     return cost_matrix;
 }
 
-map<int, int> ChallengeSolver::ConvertAssignment(vector<int>& assignment, vector<int>& indexes) {
+map<int, int> ChallengeSolver::ConvertAssignment(const vector<int>& assignment, vector<int>& indexes) {
     // Convert raw assignment indexes to a map
     // Also convert the assignment index to frames indexes
     map<int, int> frame_assignment;
 
-    for (uint i=0; i<assignment.size(); ++i) {
-        int index = i;
+    for (uint index=0; index<assignment.size(); ++index) {
         int assignedIndex = assignment[index];
 
         int frameIdx = indexes[index];
